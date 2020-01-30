@@ -49,12 +49,26 @@ func objectForKeyOrNull<T>(_ key: String, dict: [String: Any]) -> T? {
 
 struct MessageSerializer: Serializer {
     typealias Destination = Message
-    
+    // P Jan 21 Replace the entire method
     func serialize(_ source: Dictionary<String, Any>) throws -> Message {
-        let type: Int = try objectForKey("type", dict: source)
-        let speech: String = try objectForKey("speech", dict: source)
-        
-        return Message(type: type, speech: speech)
+        var sourceCopy = source
+        var messagePayload:Payload? = nil
+        if let payload = sourceCopy["payload"]{
+            do {
+                let json = try JSONSerialization.data(withJSONObject: payload)
+                let decoder = JSONDecoder()
+                decoder.keyDecodingStrategy = .convertFromSnakeCase
+                messagePayload = try decoder.decode(Payload.self, from: json)
+                print(messagePayload as Any)
+                //decodedPayload.forEach{print($0)}
+            } catch {
+                print(error)
+            }
+            sourceCopy["speech"] = ""
+        }
+        let type: Int = try objectForKey("type", dict: sourceCopy)
+        let speech: String = try objectForKey("speech", dict: sourceCopy)
+        return Message(type: type, speech: speech, messagePayload: messagePayload)
     }
 }
 
