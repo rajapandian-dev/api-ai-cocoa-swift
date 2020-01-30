@@ -11,6 +11,7 @@ import Foundation
 public struct Message {
     public let type: Int
     public let speech: String
+    public let messagePayload: Payload?
 }
 
 public struct Fulfillment {
