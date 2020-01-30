@@ -14,7 +14,7 @@ For support, please feel free to contact me at https://www.linkedin.com/in/syeda
 import Foundation
 public struct PayloadMessage : Codable {
 	public let id : String?
-    public let voice : String?
+        public let voice : String?
 	public let timestamp : Int?
 	public let text : String?
 	public let endtext : String?
