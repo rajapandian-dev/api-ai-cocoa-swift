@@ -14,16 +14,17 @@ For support, please feel free to contact me at https://www.linkedin.com/in/syeda
 import Foundation
 public struct PayloadMessage : Codable {
 	public let id : String?
-        public let voice : String?
+    public let voice : String?
 	public let timestamp : Int?
 	public let text : String?
 	public let endtext : String?
 	public let textcolor : String?
 	public let attachment : Attachment?
 	public let actions : [Actions]?
+    public let suggestions : [Actions]?
+
 
 	enum CodingKeys: String, CodingKey {
-
 		case id = "id"
 		case timestamp = "timestamp"
         case voice = "voice"
@@ -32,6 +33,7 @@ public struct PayloadMessage : Codable {
 		case textcolor = "text-color"
 		case attachment = "attachment"
 		case actions = "actions"
+        case suggestions = "suggestions"
 	}
 
 	public init(from decoder: Decoder) throws {
@@ -44,6 +46,7 @@ public struct PayloadMessage : Codable {
 		textcolor = try values.decodeIfPresent(String.self, forKey: .textcolor)
 		attachment = try values.decodeIfPresent(Attachment.self, forKey: .attachment)
 		actions = try values.decodeIfPresent([Actions].self, forKey: .actions)
+        suggestions = try values.decodeIfPresent([Actions].self, forKey: .suggestions)
 	}
 
 }
